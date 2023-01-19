@@ -2,8 +2,14 @@ import { UserModel } from './models';
 
 const user = new UserModel({ name: 'myName', age: 20 });
 
-user.on('change', () => { })
-user.on('change', () => { })
-user.on('click', () => { })
+user.on('change', () => {
+  console.log('change 1');
+})
+user.on('change', () => {
+  console.log('change 2');
+})
+user.on('click', () => {
+  console.log('click was triggered');
+})
 
-console.log(user);
+user.trigger('click');
