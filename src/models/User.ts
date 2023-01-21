@@ -1,33 +1,18 @@
-import axios, { AxiosResponse } from 'axios';
-
 import { UserInterface } from '../interfaces';
-import { EventingModel } from './index'
+import { EventingModel, SyncModel } from './index'
 
+const rootUrl = 'http://localhost:3000/users';
 export class User {
   public events: EventingModel = new EventingModel();
+  public sync: SyncModel<UserInterface.IUserProps> = new SyncModel<UserInterface.IUserProps>(rootUrl);
 
-  private apiUrl = 'http://localhost:3000';
   constructor(private data: UserInterface.IUserProps) { }
 
-  get(propName: string): (string | number) {
-    return this.data[propName];
+  get(propName: string): (string | number | undefined) {
+    return this.data[propName as keyof UserInterface.IUserProps];
   }
 
   set(update: UserInterface.IUserProps): void {
     Object.assign(this.data, update);
-  }
-
-  async fetch(): Promise<void> {
-    const res = await axios.get(`${this.apiUrl}/users/${this.get('id')}`) as AxiosResponse;
-    this.set(res.data);
-  }
-
-  async save(): Promise<void> {
-    const id = this.get('id');
-    if (id) {
-      await axios.put(`${this.apiUrl}/users/${id}`, this.data);
-    } else {
-      await axios.post(`${this.apiUrl}/users`, this.data);
-    }
   }
 }
