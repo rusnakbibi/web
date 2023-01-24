@@ -1,3 +1,4 @@
 export * as UserInterface from './user.interface';
 export * as EventingInterface from './eventing.interface';
-export * as SyncInterface from './sync.interface';
+export * as APISyncInterface from './apiSync.interface';
+export * as MainModelInterface from './main.interface';

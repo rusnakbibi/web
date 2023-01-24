@@ -1,18 +1,24 @@
 import { UserInterface } from '../interfaces';
-import { EventingModel, SyncModel } from './index'
+import { APISyncModel } from './APISync';
+import { AttributesModel } from './Attributes';
+import { EventingModel } from './Eventing';
+import { MainModel } from './Main';
+import { CollectionModel } from './Collection';
 
 const rootUrl = 'http://localhost:3000/users';
-export class User {
-  public events: EventingModel = new EventingModel();
-  public sync: SyncModel<UserInterface.IUserProps> = new SyncModel<UserInterface.IUserProps>(rootUrl);
-
-  constructor(private data: UserInterface.IUserProps) { }
-
-  get(propName: string): (string | number | undefined) {
-    return this.data[propName as keyof UserInterface.IUserProps];
+export class User extends MainModel<UserInterface.IUserProps> {
+  static buildUser(attrs: UserInterface.IUserProps): User {
+    return new User(
+      new AttributesModel<UserInterface.IUserProps>(attrs),
+      new EventingModel(),
+      new APISyncModel<UserInterface.IUserProps>(rootUrl),
+    );
   }
 
-  set(update: UserInterface.IUserProps): void {
-    Object.assign(this.data, update);
+  static buildUserCollection(): CollectionModel<User, UserInterface.IUserProps> {
+    return new CollectionModel<User, UserInterface.IUserProps>(
+      'http://localhost:3000/users',
+      (json: UserInterface.IUserProps) => User.buildUser(json),
+    );
   }
 }

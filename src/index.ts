@@ -1,3 +1,7 @@
-import { UserModel } from './models';
+import { UserForm } from './views/UserForm';
 
-const user = new UserModel({ name: 'New Record', age: 50 });
+const userForm = new UserForm(
+  document.getElementById('root')!
+);
+
+userForm.render();

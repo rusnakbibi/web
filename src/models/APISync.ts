@@ -1,8 +1,8 @@
-import axios, { AxiosResponse, AxiosPromise } from 'axios';
+import axios, { AxiosPromise } from 'axios';
 
-import { SyncInterface } from '../interfaces';
+import { APISyncInterface } from '../interfaces';
 
-export class Sync<T extends SyncInterface.IHasId> {
+export class APISyncModel<T extends APISyncInterface.IHasId> {
   constructor(public apiUrl: string) { }
 
   async fetch(id: number): AxiosPromise {
