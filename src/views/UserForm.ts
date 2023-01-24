@@ -1,22 +1,13 @@
+import { View } from './View';
+
 import { User } from '../models/User';
-export class UserForm {
-  constructor(
-    public parent: Element,
-    public model: User
-  ) {
-    this.bindModel();
-  }
-
-  bindModel(): void {
-    this.model.on('change', () => {
-      this.render();
-    });
-  }
-
+import { UserInterface } from '../interfaces';
+export class UserForm extends View<User, UserInterface.IUserProps> {
   eventsMap(): { [key: string]: () => void } {
     return {
       'click:.set-age': this.onSetAgeClick,
       'click:.set-name': this.onSetNameClick,
+      'click:.save-model': this.onSaveClick,
     }
   }
 
@@ -31,18 +22,19 @@ export class UserForm {
 
       this.model.set({ name });
     }
+  }
 
+  onSaveClick = (): void => {
+    this.model.save();
   }
 
   template(): string {
     return `
       <div>
-        <h1>User Form</h1>
-        <div>User name: ${this.model.getAttribute('name')}</div>
-        <div>User age: ${this.model.getAttribute('age')}</div>
-        <input />
+        <input placeholder="${this.model.getAttribute('name')}" />
         <button class="set-name">Change name</button>
         <button class="set-age">Set Random Age</button>
+        <button class="save-model">Save User</button>
       </div>
     `
   }
