@@ -21,4 +21,9 @@ export class User extends MainModel<UserInterface.IUserProps> {
       (json: UserInterface.IUserProps) => User.buildUser(json),
     );
   }
+
+  setRandomAge(): void {
+    const age = Math.round(Math.random() * 100);
+    this.set({ age });
+  }
 }
