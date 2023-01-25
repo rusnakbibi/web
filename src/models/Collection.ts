@@ -22,9 +22,10 @@ export class CollectionModel<T, K> {
     axios.get(this.apiUrl).then((res: AxiosResponse) => {
       res.data.forEach((value: K) => {
         this.models.push(this.deserialize(value));
-      })
+      });
+
+      this.trigger('change');
     });
 
-    this.trigger('change');
   }
 }
